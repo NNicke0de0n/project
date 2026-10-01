@@ -1,0 +1,24 @@
+# Байткод и кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Секреты и конфигурация бота
+.env
+*.env
+config.local.py
+
+# Локальные базы данных
+*.sqlite3
+*.db
+
+# Служебные файлы ОС и редакторов
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
