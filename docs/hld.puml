@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+actor "Пользователь Telegram" as User
+actor "Администратор / Разработчик" as Admin
+
+cloud "Telegram Cloud" {
+    component "Telegram Bot API" as TG_API
+}
+
+node "Сервер приложения HabitTrackerBot" {
+    component "Dispatcher & Router\n(Aiogram 3)" as Router
+    component "Habit Handlers\n(Бизнес-логика)" as Handlers
+    component "Scheduler Service\n(APScheduler)" as Scheduler
+    database "SQLite / PostgreSQL\n(База данных)" as DB
+    file "Local Storage\n(.env, backups)" as Storage
+}
+
+User <--> TG_API : Отправка команд, нажатие кнопок
+TG_API <--> Router : Long Polling / Webhook (HTTPS)
+
+Router --> Handlers : Маршрутизация событий
+Handlers --> DB : Чтение/Запись привычек и логов
+Scheduler --> Handlers : Триггер напоминаний по времени
+Scheduler --> TG_API : Отправка пуш-уведомлений пользователю
+
+Admin --> Storage : Конфигурация и контроль бэкапов
+Admin ..> Router : Мониторинг логов
+@enduml
